@@ -155,12 +155,15 @@ class _AddItemState extends State<AddItem> {
 
       int barcodeExit =
           await ProductsDatabase.instance.oldProduct(barcode.text);
-
+//values of items in the home screen
       final Product product = Product(
         id: barcodeExit == -1 ? id : barcodeExit,
         name: name.text,
         barcode: barcode.text,
-        quantity: quantity.text,
+        quantity: quantity.text ,
+        description: description.text,
+        purchasePrice: purchasePrice.text,
+        regularPrice: regularPrice.text,
         deleted: false,
       );
 

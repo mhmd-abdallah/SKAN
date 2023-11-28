@@ -131,7 +131,7 @@ class _DeletedProductState extends State<DeletedProduct> {
               ),
             ),
             TableData(
-              items: items,  
+              items: items, 
             ),
           ],
         ),

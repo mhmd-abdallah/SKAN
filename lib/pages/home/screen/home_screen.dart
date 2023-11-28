@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Permission.storage.request();
     }
     if (status.isGranted) {
-      exportExcel();
+   //   exportExcel();
     }
   }
 
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     });
   }
-
+/*
   void exportExcel() async {
     if (items.isEmpty) {
       //No data
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
           });
     }
   }
-
+*/
   void deleteItem(id) {
     showDialog(
       context: context,

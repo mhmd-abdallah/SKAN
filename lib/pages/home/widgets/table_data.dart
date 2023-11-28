@@ -14,20 +14,15 @@ import 'package:skan/database/products_database.dart';
 
 import '../../../constants/dialogs.dart';
 
-
 // This widget is created to reduce code duplication
 
 class TableData extends StatefulWidget {
   final List<Product> items; // Items to be shown
- 
- 
 
-  
   final columns = ProductFields.showedTableValues;
 
   TableData({
     required this.items,
-
   });
 
   @override
@@ -35,8 +30,51 @@ class TableData extends StatefulWidget {
 }
 
 class _TableDataState extends State<TableData> {
-  
-  
+  List<Map<String, String>> additionalData = [];
+  bool deleted = false;
+  late final Product product;
+
+  void deleteItem(id) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialogs().deleteValidation(
+        context: context,
+        onDeletePress: () {
+          ProductsDatabase.instance.delete(id);
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
+          // refreshProducts();
+        },
+      ),
+    );
+    setState(() {});
+    // Navigator.of(context).pop();
+  }
+
+  void restoreItem(id) {
+    showDialog(
+      context: context,
+      builder: (context) => Dialogs().restoreValidation(
+        context: context,
+        onDeletePress: () {
+          ProductsDatabase.instance.restore(id);
+          Navigator.of(context).pop();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
   // Style for the columns fields to reduce code duplication
   final columnsStyle = TextStyle(
     fontWeight: FontWeight.bold,
@@ -48,7 +86,7 @@ class _TableDataState extends State<TableData> {
     fontWeight: FontWeight.w500,
     fontSize: 18,
   );
-late String message;
+  late String message;
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -145,9 +183,11 @@ late String message;
                                     ],
                                   ),
                                 ),
-                                child: InkWell(
+                                child: GestureDetector(
                                   onTap: () {
-                                  
+                                    deleted == false
+                                        ? deleteItem(product.id)
+                                        : restoreItem(product.id);
                                   },
                                   child: Image.asset(
                                     'assets/icons/trash.png',
@@ -163,28 +203,28 @@ late String message;
                                 height: 45,
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(
-                                        width: 1, color: Color(0xFFF2F2F2)),
-                                    gradient: LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Color(0xffFFFFFF),
-                                        Color(0xffFFFFFF)
-                                      ],
-                                    ),
-                                  
-                                    ),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                      width: 1, color: Color(0xFFF2F2F2)),
+                                  gradient: LinearGradient(
+                                    begin: Alignment.topCenter,
+                                    end: Alignment.bottomCenter,
+                                    colors: [
+                                      Color(0xffFFFFFF),
+                                      Color(0xffFFFFFF)
+                                    ],
+                                  ),
+                                ),
                                 child: InkWell(
                                   onTap: () {
-         Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) =>
-                        AddItem(scannedBarcode: '',),
-                  ),
-                );
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            // AddItem( scannedBarcode: '', ),
+                                            EditItem(product, additionalData),
+                                      ),
+                                    );
                                   },
                                   child: Image.asset(
                                     'assets/icons/edit.png',
@@ -216,7 +256,14 @@ late String message;
                                     ),
                                 child: InkWell(
                                   onTap: () {
-                                    // Your onTap functionality here
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => AddItem(
+                                          scannedBarcode: '',
+                                        ),
+                                      ),
+                                    );
                                   },
                                   child: Image.asset(
                                     'assets/icons/icons8-plus-sign-32.png',
@@ -248,6 +295,37 @@ late String message;
                         DataCell(
                           Text(
                             product.quantity,
+                            style: TextStyle(
+                              color: Red,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            "${product.description!} ",
+                            style: TextStyle(
+                              color: Red,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            "${product.purchasePrice!} ",
+                            // product.purchasePrice.toString(),
+                            style: TextStyle(
+                              color: Red,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        DataCell(
+                          Text(
+                            "${product.regularPrice!} ",
                             style: TextStyle(
                               color: Red,
                               fontWeight: FontWeight.w500,

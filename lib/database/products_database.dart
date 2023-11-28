@@ -23,7 +23,7 @@ class ProductsDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(path, version: 4, onCreate: _createDB);
   }
 
   Future _createDB(Database db, int version) async {
@@ -33,7 +33,10 @@ class ProductsDatabase {
         ${ProductFields.id} INTEGER PRIMARY KEY AUTOINCREMENT, 
         ${ProductFields.name} TEXT NOT NULL,
         ${ProductFields.barcode} TEXT NOT NULL, 
-        ${ProductFields.quantity} TEXT NOT NULL,
+        ${ProductFields.quantity} REAL,
+        ${ProductFields.description} TEXT NOT NULL,
+        ${ProductFields.purchasePrice} REAL,
+        ${ProductFields.regularPrice} REAL,
         ${ProductFields.deleted} INTEGER NOT NULL
       )
 ''');
@@ -51,9 +54,8 @@ class ProductsDatabase {
     final db = await instance.database;
 
     final json = product.toMap();
-
     final id = await db.rawInsert(
-        'INSERT INTO products VALUES(${json[ProductFields.id]}, "${json[ProductFields.name]}", "${json[ProductFields.barcode]}", "${json[ProductFields.quantity]}",  ${json[ProductFields.deleted]})');
+        'INSERT INTO products VALUES(${json[ProductFields.id]}, "${json[ProductFields.name]}", "${json[ProductFields.barcode]}", "${json[ProductFields.quantity]}","${json[ProductFields.description]}", "${json[ProductFields.purchasePrice]}","${json[ProductFields.regularPrice]}",   ${json[ProductFields.deleted]})');
     return product.copyWith(id: id);
   }
 

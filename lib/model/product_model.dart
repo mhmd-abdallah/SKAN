@@ -16,15 +16,21 @@ class ProductFields {
     name,
     barcode,
     quantity,
+    description,
+    regularPrice,
+    purchasePrice,
   ];
 
   static final String id = 'ID';
   static final String name = 'Name';
   static final String barcode = 'Barcode';
   static final String quantity = 'Quantity';
+  static final String description = 'description';
+  static final String regularPrice = 'regularPrice';
+  static final String purchasePrice = 'purchasePrice';
   static final String deleted = 'Deleted';
-  static final String category = 'Category';
-  static final String brand = 'Brand';
+  //static final String category = 'Category';
+  //static final String brand = 'Brand';
 }
 
 class Product extends Equatable {
@@ -35,9 +41,9 @@ class Product extends Equatable {
   // final String? category;
   // final String? brand;
   final bool deleted; // Check if the product is deleted or not
-  // final double? regularPrice;
-  // final double? purchasePrice;
-  // final String? description;
+  final String? description;
+  final String? regularPrice;
+  final String? purchasePrice;
 
   Product({
     required this.id,
@@ -47,18 +53,23 @@ class Product extends Equatable {
     required this.deleted,
     // this.brand,
     // this.category,
-    // this.regularPrice,
-    // this.purchasePrice,
-    // this.description,
+    this.description,
+    this.regularPrice,
+    this.purchasePrice,
   });
+
+  List<Map<String, String>>? get oldAdditionalData => null;
 
   Product copyWith({
     int? id,
     String? name,
     String? barcode,
     String? quantity,
-    String? brand,
-    String? category,
+    String? description,
+    String? regularPrice,
+    String? purchasePrice,
+    //String? brand,
+    // String? category,
     bool? deleted,
   }) {
     return Product(
@@ -66,6 +77,9 @@ class Product extends Equatable {
       name: name ?? this.name,
       barcode: barcode ?? this.barcode,
       quantity: quantity ?? this.quantity,
+      description: description ?? this.description,
+      purchasePrice: purchasePrice ?? this.purchasePrice,
+      regularPrice: regularPrice ?? this.regularPrice,
       // brand: brand ?? this.brand,
       // category: category ?? this.category,
       deleted: deleted ?? this.deleted,
@@ -79,6 +93,9 @@ class Product extends Equatable {
       ProductFields.name: name,
       ProductFields.barcode: barcode,
       ProductFields.quantity: quantity,
+      ProductFields.description: description,
+      ProductFields.purchasePrice: purchasePrice,
+      ProductFields.regularPrice: regularPrice,
       ProductFields.deleted: deleted ? 1 : 0,
     };
   }
@@ -90,6 +107,9 @@ class Product extends Equatable {
       name: map['name'] as String,
       barcode: map['barcode'] as String,
       quantity: map['quantity'] as String,
+      description: map['description'] as String,
+      purchasePrice: map['purchasePrice'] as String,
+      regularPrice: map['regularPrice'] as String,
       // category: map['category'] as String,
       // brand: map['brand'] as String,
       deleted: map['deleted'] as bool,
@@ -103,6 +123,9 @@ class Product extends Equatable {
         name: json[ProductFields.name] as String,
         barcode: json[ProductFields.barcode].toString(),
         quantity: json[ProductFields.quantity].toString(),
+        description: json[ProductFields.description].toString(),
+        purchasePrice: json[ProductFields.purchasePrice].toString(),
+        regularPrice: json[ProductFields.regularPrice].toString(),
         deleted: json[ProductFields.deleted] == 0 ? false : true,
       );
 
@@ -111,5 +134,14 @@ class Product extends Equatable {
 
   @override
   // List<Object> get props => [id, name, barcode, quantity];
-  List<Object> get props => [id, name, barcode, quantity, deleted];
+  List<Object> get props => [
+        id,
+        name,
+        barcode,
+        quantity,
+        description.toString(),
+        purchasePrice.toString(),
+        regularPrice.toString(),
+        deleted
+      ];
 }

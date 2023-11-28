@@ -163,16 +163,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
         ],
       ),
       body: SingleChildScrollView(
-        
         child: Container(
-           
-            margin: EdgeInsets.only(top: 7, left: 7),
-            padding: EdgeInsets.fromLTRB(15, 13, 15, 13),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.grey),
-              borderRadius: BorderRadius.all(Radius.circular(18.0)),),
+          margin: EdgeInsets.only(top: 7, left: 7),
+          padding: EdgeInsets.fromLTRB(15, 13, 15, 13),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.all(Radius.circular(18.0)),
+          ),
           child: DataTable(
-            
             columns: [
               DataColumn(
                 label: Text(
@@ -220,17 +218,22 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       style: rowFieldStyle,
                     ),
                   ),
-                  data.values.first.isEmpty
-                      ? DataCell(Text(
-                          'NaN',
+                   data.values.first.isEmpty
+                      ? 
+                      DataCell(Text(
+                          '1',
+                            
                           style: rowValueStyle,
                         ))
-                      : DataCell(
+                      :
+                      // additional data
+                      DataCell(
                           Text(
                             data.values.first,
                             style: rowValueStyle,
                           ),
                         ),
+                
                 ]),
               )
             ],

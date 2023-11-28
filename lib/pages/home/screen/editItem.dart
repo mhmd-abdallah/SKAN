@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_final_fields, curly_braces_in_flow_control_structures, avoid_print, prefer_const_constructors, avoid_unnecessary_containers, file_names, avoid_function_literals_in_foreach_calls
+// ignore_for_file: prefer_const_constructors_in_immutables, use_key_in_widget_constructors, prefer_final_fields, curly_braces_in_flow_control_structures, avoid_print, prefer_const_constructors, avoid_unnecessary_containers, file_names, avoid_function_literals_in_foreach_calls, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -54,8 +54,11 @@ class _EditItemState extends State<EditItem> {
     barcode.text = widget.product.barcode;
     name.text = widget.product.name;
     quantity.text = widget.product.quantity;
-
-    description.text = widget.oldAdditionalData
+    description.text = widget.product.description!;
+ 
+    regularPrice.text = widget.product.regularPrice!;
+    purchasePrice.text = widget.product.purchasePrice!;
+    /*description.text = widget.oldAdditionalData
         .firstWhere((element) => element.keys.contains('Description'))
         .values
         .first;
@@ -66,7 +69,7 @@ class _EditItemState extends State<EditItem> {
     purchasePrice.text = widget.oldAdditionalData
         .firstWhere((element) => element.keys.contains('PurchasePrice'))
         .values
-        .first;
+        .first;*/
 
     widget.oldAdditionalData
         .removeWhere((item) => item.containsKey('Description'));
@@ -205,9 +208,9 @@ class _EditItemState extends State<EditItem> {
         );
       }
     });
-    oldAdditionalData['Description'] = [description.text];
-    oldAdditionalData['RegularPrice'] = [regularPrice.text];
-    oldAdditionalData['PurchasePrice'] = [purchasePrice.text];
+  /* oldAdditionalData['Description'] = [description.text];
+   oldAdditionalData['RegularPrice'] = [regularPrice.text];
+  oldAdditionalData['PurchasePrice'] = [purchasePrice.text];
 
     ProductsDatabase.instance.updateAdditionalData(
       widget.product.id,
@@ -224,18 +227,27 @@ class _EditItemState extends State<EditItem> {
       'PurchasePrice',
       oldAdditionalData['PurchasePrice']!.join(', '),
     );
+    */
   }
 
   void editItem(context) async {
     //Check the required fields
     if (barcode.text.isNotEmpty &&
         name.text.isNotEmpty &&
-        quantity.text.isNotEmpty) {
+        quantity.text.isNotEmpty
+        &&
+        description.text.isNotEmpty
+        &&
+        regularPrice.text.isNotEmpty&&
+        purchasePrice.text.isNotEmpty) {
       final Product product = Product(
         id: widget.product.id,
         name: name.text,
         barcode: barcode.text,
-        quantity: quantity.text,
+        quantity: quantity.text ,
+        description: description.text,
+        regularPrice: regularPrice.text,
+       purchasePrice: purchasePrice.text,
         deleted: false,
       );
 
@@ -258,7 +270,7 @@ class _EditItemState extends State<EditItem> {
         } else {
           ProductsDatabase.instance.update(product);
 
-          _updateOldAdditionalData();
+         _updateOldAdditionalData();
 
           newAdditionalData.forEach((key, value) {
             ProductsDatabase.instance.addAdditionalData(
@@ -482,7 +494,7 @@ class _EditItemState extends State<EditItem> {
                 shape: CircleBorder(),
                 color: Colors.grey,
               ),
-              child: Padding(
+              /*child: Padding(
                 padding: EdgeInsets.all(10),
                 child: DecoratedBox(
                   decoration: ShapeDecoration(
@@ -490,12 +502,12 @@ class _EditItemState extends State<EditItem> {
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: Image.asset(
-                        'assets/images/noimage.png',
+                        'assets/images/LogoSkan.jpg',
                       ).image,
                     ),
                   ),
                 ),
-              ),
+              ), */
             ),
           ],
         ),
